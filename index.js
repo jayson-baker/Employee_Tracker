@@ -1,5 +1,4 @@
 const {
-  query,
   initQuestion,
   AddDeptQuestion,
   ViewDeptQuestion,
@@ -7,6 +6,12 @@ const {
   ViewEmployeeQuestion,
   AddRoleQuestion,
 } = require("./lib/questionsExtended");
+const sequelize = require("./config/connection");
+
+String.prototype.toNumber = function () {
+  return Number(this);
+};
+const log = console.log;
 
 async function init() {
   while (true) {
@@ -20,9 +25,17 @@ async function init() {
       case "Add Role":
         const newrole = new AddRoleQuestion();
         const roleData = await newrole.multiPrompt();
-        query(
-          `INSERT INTO role (title, salary, department_id) VALUES ('${roleData[0].NewRoleName}', ${roleData[1].NewRoleSalary}, ${roleData[2].NewRoleDept})`
-        );
+        console.log(roleData);
+
+        try {
+          await sequelize.query(
+            `INSERT INTO role (title, salary, department_id) VALUES ('${
+              roleData[0].NewRoleName
+            }', ${roleData[1].NewRoleSalary}, ${roleData[2].toNumber()})`
+          );
+        } catch (err) {
+          log(`${err} - This shit fucked`);
+        }
         break;
       case "View All Departments":
         const viewDept = new ViewDeptQuestion();
