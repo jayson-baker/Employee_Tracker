@@ -63,7 +63,7 @@ async function init() {
             '${employeeData[0].NewEmployeeFirst}', 
             '${employeeData[1].NewEmployeeLast}', 
             ${employeeData[2].toNumber()},
-            ${employeeData[3].toNumber()});`);
+            ${employeeData[3] ? employeeData[3].toNumber() : null});`);
         } catch (err) {
           log(`${err}`);
         }
