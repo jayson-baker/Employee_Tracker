@@ -26,7 +26,6 @@ async function init() {
       case "Add Role":
         const newrole = new AddRoleQuestion();
         const roleData = await newrole.multiPrompt();
-        console.log(roleData);
 
         try {
           await sequelize.query(`
@@ -42,14 +41,13 @@ async function init() {
       case "Add Employee":
         const newEmployee = new AddEmployeeQuestion();
         const employeeData = await newEmployee.multiPrompt();
-        console.log(employeeData);
 
         try {
           await sequelize.query(`
             INSERT INTO employee (first_name, last_name, role_id, manager_id) 
-            VALUES ('
-            ${employeeData[0].NewEmployeeFirst}', 
-            ${employeeData[1].NewEmployeeLast}, 
+            VALUES (
+            '${employeeData[0].NewEmployeeFirst}', 
+            '${employeeData[1].NewEmployeeLast}', 
             ${employeeData[2].toNumber()},
             ${employeeData[3].toNumber()});`);
         } catch (err) {
