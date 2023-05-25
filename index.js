@@ -6,6 +6,7 @@ const {
   ViewEmployeeQuestion,
   AddRoleQuestion,
   AddEmployeeQuestion,
+  UpdateEmployeeQuestion,
 } = require("./lib/questionsExtended");
 const sequelize = require("./config/connection");
 
@@ -38,6 +39,19 @@ async function init() {
           log(`${err}`);
         }
         break;
+      case "Update Employee Role":
+        const updateEmpRole = new UpdateEmployeeQuestion();
+        const updateData = await updateEmpRole.multiPrompt();
+
+        try {
+          await sequelize.query(`
+           UPDATE employee
+           SET role_id = ${updateData[1].toNumber()}
+           WHERE id = ${updateData[0].toNumber()};`);
+        } catch (err) {
+          log(`${err}`);
+        }
+        break;
       case "Add Employee":
         const newEmployee = new AddEmployeeQuestion();
         const employeeData = await newEmployee.multiPrompt();
@@ -56,15 +70,15 @@ async function init() {
         break;
       case "View All Departments":
         const viewDept = new ViewDeptQuestion();
-        console.log(await viewDept.questionPrompt());
+        log(await viewDept.questionPrompt());
         break;
       case "View All Employees":
         const viewEmployee = new ViewEmployeeQuestion();
-        console.log(await viewEmployee.questionPrompt());
+        log(await viewEmployee.questionPrompt());
         break;
       case "View All Roles":
         const viewRole = new ViewRoleQuestion();
-        console.log(await viewRole.questionPrompt());
+        log(await viewRole.questionPrompt());
         break;
       case "Quit":
         process.exit(0);
