@@ -31,10 +31,9 @@ async function init() {
         try {
           await sequelize.query(`
             INSERT INTO role (title, salary, department_id) 
-            VALUES ('
-            ${roleData[0].NewRoleName}', 
-            ${roleData[1].NewRoleSalary}, 
-            ${roleData[2].toNumber()});`);
+            VALUES ('${roleData[0].NewRoleName}', ${
+            roleData[1].NewRoleSalary
+          }, ${roleData[2].toNumber()});`);
         } catch (err) {
           log(`${err}`);
         }
